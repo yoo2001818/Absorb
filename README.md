@@ -1,5 +1,5 @@
 # Absorb
-An agar.io like clone to test ECS framework
+An agar.io like clone for testing ECS framework
 
 # Building
 You need Grunt to build the project.
