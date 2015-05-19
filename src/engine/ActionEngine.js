@@ -21,6 +21,7 @@ function ActionEngine(isServer) {
    * @see Action
    */
   this.actions = [];
+  this._actions = {};
 }
 
 ActionEngine.prototype = Object.create(Engine.prototype);

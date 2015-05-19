@@ -25,7 +25,6 @@ function TurnEngine(isServer) {
    * @see Entity
    */
   this.players = this.getEntitiesFor('player');
-  this._actions = {};
 }
 
 TurnEngine.prototype = Object.create(ActionEngine.prototype);
