@@ -23,16 +23,17 @@ function build(isServer) {
         radius:8
       }).c('blob', {
         velX:Math.random()*60-30,
-        velY:Math.random()*60-30
+        velY:Math.random()*60-30,
+        weight: 64
       }).c('render', {});
     }*/
     engine.e().c('pos', {
       x:Math.random()*400-200,
       y:Math.random()*400-200,
-      radius:100
     }).c('blob', {
       velX:Math.random()*60-30,
-      velY:Math.random()*60-30
+      velY:Math.random()*60-30,
+      weight: 10000
     }).c('render', {});
   }).done();
   
