@@ -1,6 +1,10 @@
+var Action = require('./engine/Action');
+
 function BlobComponent(args) {
   this.velX = args.velX || 0;
   this.velY = args.velY || 0;
+  this.parent = args.parent;
+  this.radiusCap = args.radiusCap;
 }
 
 var BlobSystem = {
@@ -14,11 +18,33 @@ var BlobSystem = {
       var entity = this.entities[i];
       entity.c('pos').x += entity.c('blob').velX / 1000 * delta;
       entity.c('pos').y += entity.c('blob').velY / 1000 * delta;
-      //entity.c('blob').velX *= Math.pow(0.994, 1 / 12 * delta);
-      //entity.c('blob').velY *= Math.pow(0.994, 1 / 12 * delta);
+      entity.c('blob').velX *= Math.pow(0.994, 1 / 12 * delta);
+      entity.c('blob').velY *= Math.pow(0.994, 1 / 12 * delta);
+      // Find parent if available
+      if(entity.c('blob').radiusCap) {
+        entity.c('pos').radius += (entity.c('blob').radiusCap - entity.c('pos').radius) / 10;
+        if(Math.abs(entity.c('pos').radius - entity.c('blob').radiusCap) < 1) {
+          entity.c('pos').radius = entity.c('blob').radiusCap;
+          entity.c('blob').radiusCap = null;
+        }
+      }
+      if(entity.c('blob').radiusCap) continue;
       // TODO: Implement better algorithm of this, such as QuadTree
       for(var j = i+1; j < this.entities.length; ++j) {
         var other = this.entities[j];
+        if(other.c('blob').radiusCap) continue;
+        if(entity.c('blob').parent == other.id) {
+          if(!entity.c('pos').collides(other.c('pos'))) {
+           entity.c('blob').parent = null;
+          }
+          continue;
+        }
+        if(other.c('blob').parent == entity.id) {
+          if(!entity.c('pos').collides(other.c('pos'))) {
+            other.c('blob').parent = null;
+          }
+          continue;
+        }
         if(entity.c('pos').collides(other.c('pos'))) {
           // Bigger one eats smaller one
           var big, small;
@@ -54,5 +80,28 @@ var BlobSystem = {
   }
 }
 
+var BlobSplitAction = Action.scaffold(function(engine) {
+  var radius = this.entity.c('pos').radius;
+  var direction = Math.random() * Math.PI * 2;
+  engine.e().c('pos', {
+    x: this.entity.c('pos').x,
+    y: this.entity.c('pos').y,
+    radius: 1
+  }).c('blob', {
+    velX: Math.cos(direction) * radius * 3 + this.entity.c('blob').velX,
+    velY: Math.sin(direction) * radius * 3+ this.entity.c('blob').velY,
+    parent: this.entity.id,
+    radiusCap: Math.sqrt(radius*radius/2)
+  }).c('render', {
+    color: this.entity.c('render').color
+  });
+  this.entity.c('blob').radiusCap = Math.sqrt(radius*radius/2);
+  this.entity.c('blob').velX += Math.cos(direction) * -radius * 3;
+  this.entity.c('blob').velY += Math.sin(direction) * -radius * 3
+  ;
+  this.result = 1;
+});
+
 module.exports.component = BlobComponent;
 module.exports.system = BlobSystem;
+module.exports.splitAction = BlobSplitAction;
