@@ -7,7 +7,7 @@ function build(isServer) {
   engine.c('pos', require('./Position'));
   engine.c('blob', require('./Blob').component);
   engine.c('boundary', require('./Boundary').component);
-  engine.s('render', require('./Render').component);
+  engine.c('render', require('./Render').component);
   
   engine.s('blob', require('./Blob').system);
   engine.s('boundary', require('./Boundary').system);
