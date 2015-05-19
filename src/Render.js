@@ -1,5 +1,5 @@
 function RenderComponent(args) {
-  this.color = args.color || toRGB(HSVtoRGB(Math.random(), Math.random()*0.5+0.5, Math.random()*0.5+0.5));
+  this.color = args.color || toRGB(HSVtoRGB(Math.random(), 1, 0.75));
 }
 
 function HSVtoRGB(h, s, v) {
@@ -53,7 +53,7 @@ var RenderSystem = {
       this.ctx = this.canvas.getContext('2d');
     }
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.fillStyle = "black";
+    this.ctx.fillStyle = "white";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.strokeStyle = "black";
     this.entities.forEach(function(entity) {
