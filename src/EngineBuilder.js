@@ -7,10 +7,11 @@ function build(isServer) {
   engine.c('pos', require('./Position'));
   engine.c('blob', require('./Blob').component);
   engine.c('boundary', require('./Boundary').component);
+  engine.c('render', require('./Render').component);
   
   engine.s('blob', require('./Blob').system);
   engine.s('boundary', require('./Boundary').system);
-  engine.s('render', require('./Render'));
+  engine.s('render', require('./Render').system);
   
   engine.s('spawn').add(function(engine) {
     console.log('spawning');
@@ -23,7 +24,7 @@ function build(isServer) {
       }).c('blob', {
         velX:Math.random()*10-5,
         velY:Math.random()*10-5
-      });
+      }).c('render', {});
     }
   }).done();
   return engine;
