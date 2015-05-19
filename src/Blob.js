@@ -12,8 +12,8 @@ var BlobSystem = {
   update: function(delta) {
     for(var i = 0; i < this.entities.length; ++i) {
       var entity = this.entities[i];
-      entity.c('pos').x += entity.c('blob').velX / 12 * delta;
-      entity.c('pos').y += entity.c('blob').velY / 12 * delta;
+      entity.c('pos').x += entity.c('blob').velX / 1000 * delta;
+      entity.c('pos').y += entity.c('blob').velY / 1000 * delta;
       //entity.c('blob').velX *= Math.pow(0.994, 1 / 12 * delta);
       //entity.c('blob').velY *= Math.pow(0.994, 1 / 12 * delta);
       // TODO: Implement better algorithm of this, such as QuadTree
