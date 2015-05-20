@@ -63,6 +63,9 @@ var BlobSystem = {
           var diff = bigPos.radius + smallPos.radius - bigPos.distance(smallPos);
           var weightGain = Math.min(small.c('blob').weight, Math.max(0, small.c('blob').weight - 
             (smallPos.radius - diff) * (smallPos.radius - diff)));
+          if(small.c('blob').weight-weightGain > 10) {
+            weightGain = small.c('blob').weight; 
+          } 
           big.c('blob').weight += weightGain;
           bigPos.radius = Math.sqrt(big.c('blob').weight);
           small.c('blob').weight -= weightGain;
