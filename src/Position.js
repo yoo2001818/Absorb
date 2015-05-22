@@ -1,7 +1,7 @@
 function PositionComponent(args) {
   this.x = args.x;
   this.y = args.y;
-  this.radius = 4 | args.radius;
+  this.radius = args.radius || 4;
 }
 
 PositionComponent.prototype.distance = function(other) {
