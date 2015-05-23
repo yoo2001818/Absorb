@@ -32,8 +32,11 @@ BlobSystem =
       continue if entBlob.weight <= 0.1
       entPos.x += entBlob.velX / 1000 * delta
       entPos.y += entBlob.velY / 1000 * delta
-      entBlob.velX *= Math.pow 0.994, 1 / 32 * delta
-      entBlob.velY *= Math.pow 0.994, 1 / 32 * delta
+      # Set velocity to min/max value
+      preferredVelX = Math.min 30, Math.max -30, entBlob.velX
+      preferredVelY = Math.min 30, Math.max -30, entBlob.velY
+      entBlob.velX += (preferredVelX - entBlob.velX) / Math.pow 300, 1 * delta / 32
+      entBlob.velY += (preferredVelY - entBlob.velY) / Math.pow 300, 1 * delta / 32
       entPos.radius = Math.sqrt entBlob.weight
       # Set weight to preferred weight
       if entBlob.weightCap 
@@ -90,7 +93,7 @@ BlobSplitAction = Action.scaffold (engine) ->
   entBlob.weight = entBlob.weightCap if entBlob.weightCap
   weight = entBlob.weight / 2
   direction = Math.random() * Math.PI * 2
-  vel = 3 * Math.sqrt weight
+  vel = 5 * Math.sqrt weight
   velX = vel * Math.cos direction
   velY = vel * Math.sin direction
   engine.e().c 'pos',
