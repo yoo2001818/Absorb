@@ -28,6 +28,7 @@ BoundarySystem =
       # Revert transform
       entBlob.velX = vx * cos - vy * sin
       entBlob.velY = vy * cos + vx * sin
+      return
 
 module.exports =
   component: BoundaryComponent
