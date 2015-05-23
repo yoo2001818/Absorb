@@ -14,7 +14,7 @@ BoundarySystem =
       dist = entPos.distance boundary
       maxDist = boundary.radius - entPos.radius
       diff = dist - maxDist
-      continue if diff <= 0
+      continue unless diff > 0
       angle = Math.atan2 entPos.y - boundary.y, entPos.x - boundary.x
       cos = Math.cos angle
       sin = Math.sin angle

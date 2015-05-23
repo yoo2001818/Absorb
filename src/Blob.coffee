@@ -47,15 +47,15 @@ BlobSystem =
         else continue
       # TODO: Implement better algorithm of this, such as QuadTree
       for other, j in @entities
-        continue if not j > i
+        continue unless j > i
         [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
         continue if otherBlob.weightCap
         if entBlob.parent == other.id
-          entBlob.parent = null if not entPos.collides otherPos
+          entBlob.parent = null unless entPos.collides otherPos
           pushOther entity, other
           continue
         if otherBlob.parent == entity.id
-          otherBlob.parent = null if not entPos.collides otherPos
+          otherBlob.parent = null unless entPos.collides otherPos
           pushOther entity, other
           continue
         continue if otherBlob.weight <= 0.1
