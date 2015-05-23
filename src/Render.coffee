@@ -1,6 +1,6 @@
 class RenderComponent
   constructor: ({@color}) ->
-    @color ?= "hsl(#{Math.random()*360}, 100%, 75%)"
+    @color ?= Math.random()*360
 
 RenderSystem =
   priority: 10000
@@ -9,16 +9,24 @@ RenderSystem =
     @entities = engine.e 'pos', 'render'
     @canvas = null
     @ctx = null
+    @ratio = 1
   update: (delta) -> 
     return if not @canvas
     @ctx = @canvas.getContext '2d' if not @ctx
     @ctx.clearRect 0, 0, @canvas.width, @canvas.height
     for entity in @entities
-      @ctx.fillStyle = entity.c('render').color
+      @ctx.fillStyle = "hsl(#{entity.c('render').color}, 100%, 60%)"
       pos = entity.c 'pos'
       @ctx.beginPath()
-      @ctx.arc pos.x + @canvas.width / 2, pos.y + @canvas.height / 2,
-        Math.abs(pos.radius), 0, Math.PI * 2, false
+      @ctx.arc pos.x * @ratio + @canvas.width / 2, pos.y * @ratio + @canvas.height / 2,
+        Math.abs(pos.radius * @ratio), 0, Math.PI * 2, false
+      @ctx.fill()
+    for entity in @entities
+      @ctx.fillStyle = "hsl(#{entity.c('render').color}, 100%, 75%)"
+      pos = entity.c 'pos'
+      @ctx.beginPath()
+      @ctx.arc pos.x * @ratio + @canvas.width / 2, pos.y * @ratio + @canvas.height / 2,
+        Math.abs(pos.radius * @ratio - 3), 0, Math.PI * 2, false
       @ctx.fill()
     return
 
