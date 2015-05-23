@@ -2,7 +2,7 @@
   "name": "Absorb",
   "version": "0.0.1",
   "description": "An agar.io like clone to test ECS framework",
-  "main": "index.js",
+  "main": "index.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,5 +22,10 @@
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-uglify": "^0.9.1"
+  },
+  "dependencies": {
+    "express": "^4.12.4",
+    "morgan": "^1.5.3",
+    "serve-static": "^1.9.3"
   }
 }
