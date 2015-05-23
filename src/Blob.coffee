@@ -41,7 +41,7 @@ BlobSystem =
       # Set weight to preferred weight
       if entBlob.weightCap 
         entBlob.weight += (entBlob.weightCap - entBlob.weight) / 4
-        if Math.abs entBlob.weight - entBlob.weightCap < 1
+        if Math.abs entBlob.weight - entBlob.weightCap < 3
           entBlob.weight = entBlob.weightCap
           entBlob.weightCap = null
         else continue
@@ -71,6 +71,7 @@ BlobSystem =
           expectedWeight = square Math.max 0, smallPos.radius - diff
           expectedWeight = 0 if expectedWeight < 10
           weightGain = smallBlob.weight - expectedWeight
+          weightGain /= 5 if weightGain > 10
           # Velocity sharing doesn't work as well as expected.
           #bigBlob.velX = (bigBlob.velX + smallBlob.velX) * bigBlob.weight / (bigBlob.weight + weightGain)
           #bigBlob.velY = (bigBlob.velY + smallBlob.velY) * bigBlob.weight / (bigBlob.weight + weightGain)
