@@ -63,8 +63,8 @@ BlobSystem =
           # Bigger one eats smaller one
           entityBig = entPos.radius > otherPos.radius
           [big, small] = if entityBig then [entity, other] else [other, entity]
-          [bigPos, bigBlob] = [big.c('pos'), big.c('blob')]
-          [smallPos, smallBlob] = [small.c('pos'), small.c('blob')]
+          [bigPos, smallPos] = if entityBig then [entPos, otherPos] else [otherPos, entPos]
+          [bigBlob, smallBlob] = if entityBig then [entBlob, otherBlob] else [otherBlob, entBlob]
           bigPos.radius = Math.sqrt bigBlob.weight
           smallPos.radius = Math.sqrt smallBlob.weight
           diff = bigPos.radius + smallPos.radius - bigPos.distance smallPos

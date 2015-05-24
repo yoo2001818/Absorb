@@ -16,8 +16,7 @@ RenderSystem =
     return if not @canvas
     @ctx = @canvas.getContext '2d' if not @ctx
     @ctx.lineWidth = 3
-    @ctx.fillStyle = "#fff"
-    @ctx.fillRect 0, 0, @canvas.width, @canvas.height
+    @ctx.clearRect 0, 0, @canvas.width, @canvas.height
     for entity in @entities
       if entity.c('render').fill == 'none'
         @ctx.strokeStyle = entity.c('render').stroke
