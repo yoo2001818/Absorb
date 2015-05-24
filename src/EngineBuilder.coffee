@@ -1,9 +1,9 @@
-ActionEngine = require './engine/ActionEngine'
-Action = require './engine/Action'
+ActionEngine = require('ecstasy').ActionEngine
+Action = require('ecstasy').Action
 
 build = (isServer) ->
   engine = new ActionEngine isServer
-  engine.c 'player', require('./engine/PlayerComponent')
+  # engine.c 'player', require('./engine/PlayerComponent')
   engine.c 'pos', require('./Position')
   engine.c 'blob', require('./Blob').component
   engine.c 'boundary', require('./Boundary').component
@@ -13,7 +13,7 @@ build = (isServer) ->
   engine.s 'boundary', require('./Boundary').system
   engine.s 'render', require('./Render').system
   engine.s 'spawn', 
-    onAddedToEngine: (engine) ->
+    add: (engine) ->
       engine.e().c 'pos',
         x: 0
         y: 0,

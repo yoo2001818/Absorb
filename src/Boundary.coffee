@@ -1,7 +1,7 @@
 class BoundaryComponent
 
 BoundarySystem = 
-  onAddedToEngine: (engine) ->
+  add: (engine) ->
     @engine = engine
     @boundaries = engine.e 'boundary', 'pos'
     @entities = engine.e 'blob', 'pos'

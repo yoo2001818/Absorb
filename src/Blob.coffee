@@ -1,4 +1,4 @@
-Action = require './engine/Action'
+Action = require('ecstasy').Action
 
 class BlobComponent
   constructor: ({@velX, @velY, @parent, @weight, @weightCap}) ->
@@ -23,7 +23,7 @@ pushOther = (entity, other) ->
 
 BlobSystem =
   priority: 1500
-  onAddedToEngine: (engine) ->
+  add: (engine) ->
     @engine = engine
     @entities = engine.e 'blob', 'pos'
   update: (delta) ->

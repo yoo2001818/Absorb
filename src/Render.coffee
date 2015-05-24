@@ -6,7 +6,7 @@ class RenderComponent
 
 RenderSystem =
   priority: 10000
-  onAddedToEngine: (engine) ->
+  add: (engine) ->
     @engine = engine
     @entities = engine.e 'pos', 'render'
     @canvas = null
