@@ -13,7 +13,8 @@ RenderSystem =
   update: (delta) -> 
     return if not @canvas
     @ctx = @canvas.getContext '2d' if not @ctx
-    @ctx.clearRect 0, 0, @canvas.width, @canvas.height
+    @ctx.fillStyle = "#fff";
+    @ctx.fillRect 0, 0, @canvas.width, @canvas.height
     for entity in @entities
       @ctx.fillStyle = "hsl(#{entity.c('render').color}, 100%, 60%)"
       pos = entity.c 'pos'

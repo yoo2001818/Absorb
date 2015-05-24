@@ -14,6 +14,11 @@ module.exports = function(grunt) {
       cwd: 'src/',
       src: ['**/*.js'],
       dest: 'build/src/'
+    },{
+      expand: true,
+      cwd: 'src/html',
+      src: ['**/*'],
+      dest: 'build/'
     }],
     uglify: {
       options: {
