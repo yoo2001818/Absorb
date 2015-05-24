@@ -15,10 +15,13 @@ build = (isServer) ->
   engine.s 'spawn', 
     onAddedToEngine: (engine) ->
       engine.e().c 'pos',
-        x:0
-        y:0,
-        radius:240
+        x: 0
+        y: 0,
+        radius: 240
       .c 'boundary',{}
+      .c 'render',
+        fill: 'none'
+        stroke: '#000'
       for i in [0..200]
         engine.e().c 'pos', 
           x: Math.random()*400-200

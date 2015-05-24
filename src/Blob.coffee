@@ -107,8 +107,7 @@ BlobSplitAction = Action.scaffold (engine) ->
     parent: @entity.id
     weightCap: weight
     weight: 1
-  .c 'render',
-    color: @entity.c('render').color
+  .c 'render', @entity.c 'render'
   entBlob.weightCap = weight
   entBlob.velX = -velX
   entBlob.velY = -velY
