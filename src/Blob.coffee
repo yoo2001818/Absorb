@@ -41,7 +41,7 @@ BlobSystem =
       # Set weight to preferred weight
       if entBlob.weightCap 
         entBlob.weight += (entBlob.weightCap - entBlob.weight) / 4
-        if Math.abs entBlob.weight - entBlob.weightCap < 3
+        if Math.abs(entBlob.weight - entBlob.weightCap) < 3
           entBlob.weight = entBlob.weightCap
           entBlob.weightCap = null
         else continue
