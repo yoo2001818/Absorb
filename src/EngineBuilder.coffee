@@ -43,6 +43,15 @@ build = (isServer) ->
         weight: 10000
       .c 'render', {}
       ###
+  ## Test code for cameras
+  engine.s 'camera',
+    add: (engine) ->
+      @engine = engine
+      @entities = engine.e 'blob'
+    update: (delta) ->
+      render = engine.s 'render'
+      render.camera.x = @entities[0].c('pos').x
+      render.camera.y = @entities[0].c('pos').y
   
   engine.a 'blobSplit', require('./Blob').splitAction
   

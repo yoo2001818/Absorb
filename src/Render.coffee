@@ -38,7 +38,7 @@ RenderSystem =
       else
         @ctx.fillStyle = entity.c('render').stroke
       @ctx.beginPath()
-      @ctx.arc (@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,
+      @ctx.arc (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,
         Math.abs(pos.radius * @camera.ratio), 0, Math.PI * 2, false
       if entity.c('render').fill == 'none'
         @ctx.stroke()
@@ -53,7 +53,7 @@ RenderSystem =
       continue if camY2 < pos.y - pos.radius
       @ctx.fillStyle = entity.c('render').fill
       @ctx.beginPath()
-      @ctx.arc (@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,
+      @ctx.arc (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,
         Math.abs(pos.radius * @camera.ratio - 3), 0, Math.PI * 2, false
       @ctx.fill()
     return
