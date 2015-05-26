@@ -1,7 +1,7 @@
 Action = require('ecstasy').Action
 
 class BlobComponent
-  constructor: ({@velX, @velY, @parent, @weight, @weightCap}) ->
+  constructor: ({@velX, @velY, @parent, @weight, @weightCap, @invincible}) ->
     @velX ?= 0
     @velY ?= 0
     @weight ?= 0.15
@@ -45,6 +45,10 @@ BlobSystem =
           entBlob.weight = entBlob.weightCap
           entBlob.weightCap = null
         else continue
+      if entBlob.invincible
+        entBlob.invincible -= delta
+        entBlob.invincible = null if entBlob.invincible < 0
+        continue
       # TODO: Implement better algorithm of this, such as QuadTree
       for other, j in @entities
         continue unless j > i
@@ -59,6 +63,7 @@ BlobSystem =
           pushOther entity, other
           continue
         continue if otherBlob.weight <= 0.1
+        continue if otherBlob.invincible
         if entPos.collides otherPos
           # Bigger one eats smaller one
           entityBig = entPos.radius > otherPos.radius
