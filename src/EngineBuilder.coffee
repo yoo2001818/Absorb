@@ -17,20 +17,21 @@ build = (isServer) ->
       engine.e().c 'pos',
         x: 0
         y: 0,
-        radius: 240
+        radius: 1000
       .c 'boundary',{}
       .c 'render',
         fill: 'none'
         stroke: '#000'
-      for i in [0..200]
+      for i in [0..1000]
+        radius = Math.random() * 10 + 8
         engine.e().c 'pos', 
-          x: Math.random()*400-200
-          y: Math.random()*400-200
-          radius: 8
+          x: Math.random()*2000-1000
+          y: Math.random()*2000-1000
+          radius: radius
         .c 'blob',
           velX: Math.random()*60-30
           velY: Math.random()*60-30
-          weight: 64
+          weight: radius*radius
         .c 'render', {} 
       ###
       engine.e().c 'pos',
