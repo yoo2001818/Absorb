@@ -25,6 +25,11 @@ if window?
       for entity in engine.e 'blob', 'pos'
         engine.aa 'blobSplit', null, entity if entity.c('pos').radius > 20
       return
+    window.addEventListener 'mousemove', (e) ->
+      rect = canvas.getBoundingClientRect()
+      engine.s('camera').x = e.clientX - rect.left - canvas.width / 2
+      engine.s('camera').y = e.clientY - rect.top - canvas.height / 2
+    , false
   window.engine = engine
 else
   # Server

@@ -48,10 +48,16 @@ build = (isServer) ->
     add: (engine) ->
       @engine = engine
       @entities = engine.e 'blob'
+      @x = 0
+      @y = 0
     update: (delta) ->
+      entity = @entities[0]
       render = engine.s 'render'
-      render.camera.x = @entities[0].c('pos').x
-      render.camera.y = @entities[0].c('pos').y
+      render.camera.x = entity.c('pos').x
+      render.camera.y = entity.c('pos').y
+      render.camera.ratio = Math.pow(render.canvas.width / 2 / 10 / entity.c('pos').radius, 0.6)
+      entity.c('blob').velX += (@x - entity.c('blob').velX) / 100
+      entity.c('blob').velY += (@y - entity.c('blob').velY) / 100
   
   engine.a 'blobSplit', require('./Blob').splitAction
   
