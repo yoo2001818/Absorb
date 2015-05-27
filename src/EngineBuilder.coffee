@@ -51,6 +51,10 @@ build = (isServer) ->
       @x = 0
       @y = 0
     update: (delta) ->
+      for entity in @entities
+        continue unless entity.c('pos').radius > 100
+        continue if entity.c('blob').invincible
+        engine.aa 'blobSplit', null, entity
       entity = @entities[0]
       render = engine.s 'render'
       render.camera.x = entity.c('pos').x

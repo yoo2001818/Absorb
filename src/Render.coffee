@@ -51,6 +51,7 @@ RenderSystem =
       continue if camY1 > pos.y + pos.radius
       continue if camX2 < pos.x - pos.radius
       continue if camY2 < pos.y - pos.radius
+      continue if entity.c('blob') && entity.c('blob').invincible%100 > 50
       @ctx.fillStyle = entity.c('render').fill
       @ctx.beginPath()
       @ctx.arc (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,

@@ -42,6 +42,9 @@ BlobSystem =
       entBlob.velX += (preferredVelX - entBlob.velX) / Math.pow 300, 1 * delta / 32
       entBlob.velY += (preferredVelY - entBlob.velY) / Math.pow 300, 1 * delta / 32
       entPos.radius = Math.sqrt entBlob.weight
+      if entBlob.invincible
+        entBlob.invincible -= delta
+        entBlob.invincible = null if entBlob.invincible < 0
       # Set weight to preferred weight
       if entBlob.weightCap 
         entBlob.weight += (entBlob.weightCap - entBlob.weight) / 4
@@ -49,10 +52,6 @@ BlobSystem =
           entBlob.weight = entBlob.weightCap
           entBlob.weightCap = null
         else continue
-      if entBlob.invincible
-        entBlob.invincible -= delta
-        entBlob.invincible = null if entBlob.invincible < 0
-        continue
       entObj =
         x: entPos.x - entPos.radius
         y: entPos.y - entPos.radius
@@ -73,13 +72,13 @@ BlobSystem =
           pushOther entity, other
           return
         return if otherBlob.weight <= 0.1
-        return if otherBlob.invincible
         if entPos.collides otherPos
           # Bigger one eats smaller one
           entityBig = entPos.radius > otherPos.radius
           [big, small] = if entityBig then [entity, other] else [other, entity]
           [bigPos, smallPos] = if entityBig then [entPos, otherPos] else [otherPos, entPos]
           [bigBlob, smallBlob] = if entityBig then [entBlob, otherBlob] else [otherBlob, entBlob]
+          return if smallBlob.invincible
           bigPos.radius = Math.sqrt bigBlob.weight
           smallPos.radius = Math.sqrt smallBlob.weight
           diff = bigPos.radius + smallPos.radius - bigPos.distance smallPos
@@ -124,7 +123,9 @@ BlobSplitAction = Action.scaffold (engine) ->
     parent: @entity.id
     weightCap: weight
     weight: 1
+    invincible: 1000
   .c 'render', @entity.c 'render'
+  entBlob.invincible = 1000
   entBlob.weightCap = weight
   entBlob.velX = -velX
   entBlob.velY = -velY
