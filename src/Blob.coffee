@@ -1,4 +1,5 @@
 Action = require('ecstasy').Action
+QuadTree = require('simple-quadtree')
 
 class BlobComponent
   constructor: ({@velX, @velY, @parent, @weight, @weightCap, @invincible}) ->
@@ -27,6 +28,9 @@ BlobSystem =
     @engine = engine
     @entities = engine.e 'blob', 'pos'
   update: (delta) ->
+    # Create QuadTree, TODO should not use hard-coding
+    quad = new QuadTree -1000, -1000, 1000*2, 1000*2,
+      maxchildren: 4
     for entity, i in @entities
       [entPos, entBlob] = [entity.c('pos'), entity.c('blob')]
       continue if entBlob.weight <= 0.1
@@ -49,21 +53,27 @@ BlobSystem =
         entBlob.invincible -= delta
         entBlob.invincible = null if entBlob.invincible < 0
         continue
-      # TODO: Implement better algorithm of this, such as QuadTree
-      for other, j in @entities
-        continue unless j > i
+      entObj =
+        x: entPos.x - entPos.radius
+        y: entPos.y - entPos.radius
+        w: entPos.radius * 2
+        h: entPos.radius * 2
+        entity: entity
+      quad.get entObj, (obj) =>
+        other = obj.entity
+        return if other == entity
         [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
-        continue if otherBlob.weightCap
+        return if otherBlob.weightCap
         if entBlob.parent == other.id
           entBlob.parent = null unless entPos.collides otherPos
           pushOther entity, other
-          continue
+          return
         if otherBlob.parent == entity.id
           otherBlob.parent = null unless entPos.collides otherPos
           pushOther entity, other
-          continue
-        continue if otherBlob.weight <= 0.1
-        continue if otherBlob.invincible
+          return
+        return if otherBlob.weight <= 0.1
+        return if otherBlob.invincible
         if entPos.collides otherPos
           # Bigger one eats smaller one
           entityBig = entPos.radius > otherPos.radius
@@ -85,6 +95,8 @@ BlobSystem =
           smallBlob.weight -= weightGain
           smallBlob.weight = Math.max 0, smallBlob.weight
           smallPos.radius = Math.sqrt smallBlob.weight
+      # Put entities into the quadtree
+      quad.put entObj
     i = 0
     while i < @entities.length
       entity = @entities[i]
