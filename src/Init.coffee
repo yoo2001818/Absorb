@@ -27,8 +27,8 @@ if window?
       return
     window.addEventListener 'mousemove', (e) ->
       rect = canvas.getBoundingClientRect()
-      engine.s('camera').x = e.clientX - rect.left - canvas.width / 2
-      engine.s('camera').y = e.clientY - rect.top - canvas.height / 2
+      engine.s('control').x = e.clientX - rect.left - canvas.width / 2
+      engine.s('control').y = e.clientY - rect.top - canvas.height / 2
     , false
   window.engine = engine
 else
