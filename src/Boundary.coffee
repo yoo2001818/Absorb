@@ -1,6 +1,7 @@
 class BoundaryComponent
 
 BoundarySystem = 
+  priority: 2000
   add: (engine) ->
     @engine = engine
     @boundaries = engine.e 'boundary', 'pos'
