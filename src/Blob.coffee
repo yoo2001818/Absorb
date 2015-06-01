@@ -110,7 +110,9 @@ BlobSplitAction = Action.scaffold (engine) ->
   entBlob = @entity.c 'blob'
   entBlob.weight = entBlob.weightCap if entBlob.weightCap
   weight = entBlob.weight / 2
-  direction = Math.random() * Math.PI * 2
+  direction = @options
+  if not direction?
+    throw new Error 'options should be defined'
   vel = 5 * Math.sqrt weight
   velX = vel * Math.cos direction
   velY = vel * Math.sin direction

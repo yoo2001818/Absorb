@@ -23,7 +23,8 @@ if window?
       canvas.height = window.innerHeight
     window.onclick = () ->
       for entity in engine.e 'blob', 'pos'
-        engine.aa 'blobSplit', null, entity if entity.c('pos').radius > 20
+        direction = Math.random() * Math.PI * 2
+        engine.aa 'blobSplit', entity, null, direction if entity.c('pos').radius > 20
       return
     window.addEventListener 'mousemove', (e) ->
       rect = canvas.getBoundingClientRect()
