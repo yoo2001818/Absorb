@@ -59,6 +59,7 @@ build = (isServer) ->
       entity.c 'control', {} unless entity.c 'control'
   
   engine.a 'blobSplit', require('./Blob').splitAction
+  engine.a 'controlSplit', require('./Control').action
   
   return engine
 
