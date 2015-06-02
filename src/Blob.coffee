@@ -14,7 +14,7 @@ pushOther = (entity, other) ->
   [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
   # Run away from the other
   direction = Math.atan2 entPos.y - otherPos.y, entPos.x - otherPos.x
-  vel = 1
+  vel = 6
   velX = vel * Math.cos direction
   velY = vel * Math.sin direction
   entBlob.velX += velX
@@ -113,10 +113,10 @@ BlobSplitAction = Action.scaffold (engine) ->
   direction = @options
   if not direction?
     throw new Error 'options should be defined'
-  vel = 5 * Math.sqrt weight
+  vel = 10 * Math.sqrt weight
   velX = vel * Math.cos direction
   velY = vel * Math.sin direction
-  engine.e().c 'pos',
+  newEntity = engine.e().c 'pos',
     x: entPos.x
     y: entPos.y
     radius: 1
@@ -130,7 +130,7 @@ BlobSplitAction = Action.scaffold (engine) ->
   entBlob.weightCap = weight
   entBlob.velX = -velX
   entBlob.velY = -velY
-  @result = 1
+  @result = newEntity.id
 
 module.exports = 
   component: BlobComponent

@@ -14,6 +14,7 @@ build = (isServer) ->
   engine.s 'boundary', require('./Boundary').system
   engine.s 'render', require('./Render').system
   engine.s 'control', require('./Control').system
+  engine.s 'controlRender', require('./Control').renderSystem
   engine.s 'spawn', 
     add: (engine) ->
       engine.e().c 'pos',
@@ -50,13 +51,11 @@ build = (isServer) ->
     add: (engine) ->
       @engine = engine
       @entities = engine.e 'blob'
+      @controls = engine.e 'control'
     update: (delta) ->
-      entity = @entities[0]
-      render = engine.s 'render'
-      render.camera.x = entity.c('pos').x
-      render.camera.y = entity.c('pos').y
-      render.camera.ratio = Math.pow(render.canvas.width / 2 / 10 / entity.c('pos').radius, 0.6)
-      entity.c 'control', {} unless entity.c 'control'
+      if @controls.length == 0
+        entity = @entities[0]
+        entity.c 'control', {} unless entity.c 'control'
   
   engine.a 'blobSplit', require('./Blob').splitAction
   engine.a 'controlSplit', require('./Control').action
