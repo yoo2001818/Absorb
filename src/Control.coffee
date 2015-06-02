@@ -52,8 +52,9 @@ ControlSplitAction = Action.scaffold (engine) ->
   system = engine.s 'control'
   angle = Math.atan2 system.y, system.x
   for entity in system.entities
-    newEntity = engine.e engine.aa 'blobSplit', entity, null, angle
-    newEntity.c 'control', {}
+    if entity.c('blob').weight > 100
+      newEntity = engine.e engine.aa 'blobSplit', entity, null, angle
+      newEntity.c 'control', {}
 
 module.exports = 
   component: ControlComponent
