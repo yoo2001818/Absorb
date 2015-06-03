@@ -52,7 +52,6 @@ BlobSystem =
       if entBlob.invincible
         entBlob.invincible -= delta
         entBlob.invincible = null if entBlob.invincible < 0
-        continue
       entObj =
         x: entPos.x - entPos.radius
         y: entPos.y - entPos.radius
@@ -73,6 +72,7 @@ BlobSystem =
           pushOther entity, other
           return
         return if otherBlob.weight <= 0.1
+        return if entBlob.invincible
         return if otherBlob.invincible
         if entPos.collides otherPos
           # Bigger one eats smaller one
