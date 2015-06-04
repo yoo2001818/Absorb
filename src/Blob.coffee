@@ -2,7 +2,7 @@ Action = require('ecstasy').Action
 QuadTree = require('simple-quadtree')
 
 class BlobComponent
-  constructor: ({@velX, @velY, @parent, @weight, @weightCap, @invincible}) ->
+  constructor: ({@velX, @velY, @parent, @parentTime, @weight, @weightCap, @invincible}) ->
     @velX ?= 0
     @velY ?= 0
     @weight ?= 0.15
@@ -52,6 +52,11 @@ BlobSystem =
       if entBlob.invincible
         entBlob.invincible -= delta
         entBlob.invincible = null if entBlob.invincible < 0
+      if entBlob.parentTime
+        entBlob.parentTime -= delta
+        if entBlob.parentTime < 0
+          entBlob.parentTime = null
+          entBlob.parent = null
       entObj =
         x: entPos.x - entPos.radius
         y: entPos.y - entPos.radius
@@ -64,12 +69,10 @@ BlobSystem =
         [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
         return if otherBlob.weightCap
         if entBlob.parent == other.id
-          entBlob.parent = null unless entPos.collides otherPos
-          pushOther entity, other
+          pushOther entity, other if entPos.collides otherPos
           return
         if otherBlob.parent == entity.id
-          otherBlob.parent = null unless entPos.collides otherPos
-          pushOther entity, other
+          pushOther entity, other if entPos.collides otherPos
           return
         return if otherBlob.weight <= 0.1
         return if entBlob.invincible
@@ -124,6 +127,7 @@ BlobSplitAction = Action.scaffold (engine) ->
     velX: velX + entBlob.velX
     velY: velY + entBlob.velY
     parent: @entity.id
+    parentTime: 20000
     weightCap: weight
     weight: 1
   .c 'render', @entity.c 'render'

@@ -45,8 +45,8 @@ ControlRenderSystem =
     for entity in @entities
       entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
-      entBlob.velX += (xSum / @entities.length - entPos.x - entBlob.velX) / 100
-      entBlob.velY += (ySum / @entities.length - entPos.y - entBlob.velY) / 100
+      entBlob.velX += (xSum / @entities.length - entPos.x - entBlob.velX) / 30
+      entBlob.velY += (ySum / @entities.length - entPos.y - entBlob.velY) / 30
 
 ControlSplitAction = Action.scaffold (engine) ->
   system = engine.s 'control'
