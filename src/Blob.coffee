@@ -1,11 +1,15 @@
 Action = require('ecstasy').Action
 QuadTree = require('simple-quadtree')
 
+_groupId = 0
+groups = {}
+
 class BlobComponent
-  constructor: ({@velX, @velY, @parent, @parentTime, @weight, @weightCap, @invincible}) ->
+  constructor: ({@velX, @velY, @group, @parent, @weight, @weightCap, @invincible}) ->
     @velX ?= 0
     @velY ?= 0
     @weight ?= 0.15
+    @group ?= _groupId++
 
 square = (x) -> x * x
 
@@ -52,11 +56,10 @@ BlobSystem =
       if entBlob.invincible
         entBlob.invincible -= delta
         entBlob.invincible = null if entBlob.invincible < 0
-      if entBlob.parentTime
-        entBlob.parentTime -= delta
-        if entBlob.parentTime < 0
-          entBlob.parentTime = null
-          entBlob.parent = null
+      if groups[entBlob.group]
+        groups[entBlob.group] -= delta
+        if groups[entBlob.group] < 0
+          groups[entBlob.group] = null
       entObj =
         x: entPos.x - entPos.radius
         y: entPos.y - entPos.radius
@@ -68,12 +71,10 @@ BlobSystem =
         return if other == entity
         [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
         return if otherBlob.weightCap
-        if entBlob.parent == other.id
-          pushOther entity, other if entPos.collides otherPos
-          return
-        if otherBlob.parent == entity.id
-          pushOther entity, other if entPos.collides otherPos
-          return
+        if entBlob.group == otherBlob.group
+          if groups[entBlob.group]
+            pushOther entity, other if entPos.collides otherPos
+            return
         return if otherBlob.weight <= 0.1
         return if entBlob.invincible
         return if otherBlob.invincible
@@ -126,14 +127,15 @@ BlobSplitAction = Action.scaffold (engine) ->
   .c 'blob',
     velX: velX + entBlob.velX
     velY: velY + entBlob.velY
-    parent: @entity.id
-    parentTime: 20000
+    group: @entity.c('blob').group
+    parent: parent.id
     weightCap: weight
     weight: 1
   .c 'render', @entity.c 'render'
   entBlob.weightCap = weight
   entBlob.velX = -velX
   entBlob.velY = -velY
+  groups[@entity.c('blob').group] = 20000
   @result = newEntity.id
 
 module.exports = 
