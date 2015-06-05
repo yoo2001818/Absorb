@@ -18,13 +18,13 @@ pushOther = (entity, other) ->
   [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
   # Run away from the other
   direction = Math.atan2 entPos.y - otherPos.y, entPos.x - otherPos.x
-  vel = 6
+  vel = 30
   velX = vel * Math.cos direction
   velY = vel * Math.sin direction
-  entBlob.velX += velX
-  entBlob.velY += velY
-  otherBlob.velX -= velX
-  otherBlob.velY -= velY
+  entBlob.velX += (velX-entBlob.velX)/10
+  entBlob.velY += (velY-entBlob.velY)/10
+  otherBlob.velX += (-velX-otherBlob.velX)/10
+  otherBlob.velY += (-velY-otherBlob.velY)/10
 
 BlobSystem =
   priority: 1500
@@ -32,6 +32,10 @@ BlobSystem =
     @engine = engine
     @entities = engine.e 'blob', 'pos'
   update: (delta) ->
+    for group in groups
+      group -= delta
+      if group < 0
+        group = null
     # Create QuadTree, TODO should not use hard-coding
     quad = new QuadTree -1000, -1000, 1000*2, 1000*2,
       maxchildren: 4
@@ -56,10 +60,6 @@ BlobSystem =
       if entBlob.invincible
         entBlob.invincible -= delta
         entBlob.invincible = null if entBlob.invincible < 0
-      if groups[entBlob.group]
-        groups[entBlob.group] -= delta
-        if groups[entBlob.group] < 0
-          groups[entBlob.group] = null
       entObj =
         x: entPos.x - entPos.radius
         y: entPos.y - entPos.radius
