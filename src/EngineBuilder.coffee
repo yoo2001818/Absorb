@@ -3,7 +3,7 @@ Action = require('ecstasy').Action
 
 build = (isServer) ->
   engine = new ActionEngine isServer
-  # engine.c 'player', require('./engine/PlayerComponent')
+  engine.c 'player', require('./Player').player
   engine.c 'pos', require('./Position')
   engine.c 'blob', require('./Blob').component
   engine.c 'boundary', require('./Boundary').component
@@ -59,6 +59,7 @@ build = (isServer) ->
   
   engine.a 'blobSplit', require('./Blob').splitAction
   engine.a 'controlSplit', require('./Control').action
+  engine.a 'playerMouse', require('./Player').mouseAction
   
   return engine
 

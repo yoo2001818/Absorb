@@ -32,10 +32,10 @@ BlobSystem =
     @engine = engine
     @entities = engine.e 'blob', 'pos'
   update: (delta) ->
-    for group in groups
-      group -= delta
-      if group < 0
-        group = null
+    for key of groups
+      groups[key] -= delta
+      if groups[key] < 0
+        groups[key] = null
     # Create QuadTree, TODO should not use hard-coding
     quad = new QuadTree -1000, -1000, 1000*2, 1000*2,
       maxchildren: 4
