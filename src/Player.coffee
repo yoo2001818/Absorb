@@ -9,10 +9,17 @@ class PlayerComponent
     @mouseY ?= 0
     @id ?= _playerIdCount++
 
+PlayerAddAction = Action.scaffold (engine) ->
+  assert @options?
+  assert @options.name?
+  @result = engine.e().c('player', @options).id
+
 PlayerMouseAction = Action.scaffold (engine) ->
-  playerComp = @entity.c 'player'
+  assert @player?
+  playerComp = @player.c 'player'
   # Pre-check
   assert playerComp
+  assert @options?
   assert typeof @options.mouseX == 'number'
   assert typeof @options.mouseY == 'number'
   # Set mouse position of player
@@ -26,3 +33,4 @@ PlayerMouseAction = Action.scaffold (engine) ->
 module.exports =
   component: PlayerComponent
   mouseAction: PlayerMouseAction
+  addAction: PlayerAddAction

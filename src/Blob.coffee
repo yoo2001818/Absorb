@@ -117,7 +117,7 @@ BlobSplitAction = Action.scaffold (engine) ->
   direction = @options
   if not direction?
     throw new Error 'options should be defined'
-  vel = 10 * Math.sqrt weight
+  vel = 40 * Math.sqrt weight
   velX = vel * Math.cos direction
   velY = vel * Math.sin direction
   newEntity = engine.e().c 'pos',
@@ -133,9 +133,9 @@ BlobSplitAction = Action.scaffold (engine) ->
     weight: 1
   .c 'render', @entity.c 'render'
   entBlob.weightCap = weight
-  entBlob.velX = -velX
-  entBlob.velY = -velY
-  groups[@entity.c('blob').group] = 20000
+  entBlob.velX = -velX/6
+  entBlob.velY = -velY/6
+  groups[@entity.c('blob').group] = 8000
   @result = newEntity.id
 
 module.exports = 
