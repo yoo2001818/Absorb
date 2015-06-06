@@ -8,14 +8,37 @@ ControlSystem =
   add: (engine) ->
     @engine = engine
     @entities = engine.e 'control', 'blob'
+    @players = engine.e 'player'
   update: (delta) ->
+    # Calculate average value of position
+    groupList = {}
     for entity in @entities
       continue unless entity.c('control').owner?
+      if not groupList[entity.c('control').owner]?
+        groupList[entity.c('control').owner] =
+          x: 0
+          y: 0
+          radius: 0
+      group = groupList[entity.c('control').owner]
+      entPos = entity.c 'pos'
+      group.x += entPos.x * 1
+      group.y += entPos.y * 1
+      group.radius += 1
+    for key, group of groupList
+      group.x /= group.radius
+      group.y /= group.radius
+    for entity in @entities
+      continue unless entity.c('control').owner?
+      group = groupList[entity.c('control').owner]
       player = @engine.e(entity.c('control').owner).c 'player'
+      continue unless group?
       continue unless player?
+      entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
       entBlob.velX += (player.mouseX - entBlob.velX) / 30
       entBlob.velY += (player.mouseY - entBlob.velY) / 30
+      entBlob.velX += (group.x - entPos.x - entBlob.velX) / 30
+      entBlob.velY += (group.y - entPos.y - entBlob.velY) / 30
 
 ControlRenderSystem =
   add: (engine) ->
