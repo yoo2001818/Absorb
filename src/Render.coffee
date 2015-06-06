@@ -44,6 +44,9 @@ RenderSystem =
         @ctx.stroke()
       else
         @ctx.fill()
+    @ctx.textAlign = 'center'
+    @ctx.textBaseline = 'middle'
+    @ctx.lineWidth = 1
     for entity in @entities
       continue if entity.c('render').fill == 'none'
       pos = entity.c 'pos'
@@ -56,6 +59,18 @@ RenderSystem =
       @ctx.arc (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,
         Math.abs(pos.radius * @camera.ratio - 3), 0, Math.PI * 2, false
       @ctx.fill()
+      continue unless entity.c('control')
+      continue unless entity.c('control').owner
+      player = engine.e entity.c('control').owner
+      continue unless player
+      playerComp = player.c 'player'
+      continue if pos.radius* @camera.ratio/2 < 15
+      @ctx.font = (pos.radius* @camera.ratio/2)+"px sans-serif";
+      @ctx.strokeStyle = '#000'
+      @ctx.fillStyle = '#fff'
+      console.log playerComp.name
+      @ctx.fillText playerComp.name, (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2
+      @ctx.strokeText playerComp.name, (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2
     return
 
 module.exports = 
