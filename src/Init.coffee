@@ -34,5 +34,5 @@ else
   # Server
   console.log 'server'
   engine = EngineBuilder.build true
-  setInterval engine.update.bind(engine, 100), 100
+  setInterval engine.update.bind(engine, 12), 12
 module.exports = engine

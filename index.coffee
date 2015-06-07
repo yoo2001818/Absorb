@@ -7,6 +7,8 @@ port = 8000
 
 grunt.registerTask 'run', 'Runs the server.', () ->
   done = @async()
+  require './src/Init.coffee'
+  ###
   app = express()
 
   app.use morgan 'short'
@@ -14,6 +16,7 @@ grunt.registerTask 'run', 'Runs the server.', () ->
 
   app.listen port
   console.log "Listening on port #{port}"
+  ###
 
 console.log 'Building project before opening server'
 grunt.tasks ['default', 'run']

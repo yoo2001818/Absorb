@@ -46,12 +46,13 @@ ControlRenderSystem =
     @entities = engine.e 'control', 'pos', 'blob'
   update: (delta) ->
     render = @engine.s 'render'
+    return unless render.canvas?
     xSum = 0
     ySum = 0
     radiusSum = 0
     weightSum = 0
     for entity in @entities
-      continue unless entity.c('control').owner == engine.player.id
+      continue unless entity.c('control').owner == @engine.player.id
       entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
       xSum += entPos.x * entPos.radius
