@@ -4,7 +4,7 @@ morgan = require 'morgan'
 
 port = 8000
 
-require './src/Init.coffee'
+require './src/Init'
 ###
 app = express()
 
