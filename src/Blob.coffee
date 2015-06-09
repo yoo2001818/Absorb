@@ -56,7 +56,6 @@ BlobSystem =
         if Math.abs(entBlob.weight - entBlob.weightCap) < 3
           entBlob.weight = entBlob.weightCap
           entBlob.weightCap = null
-        else continue
       if entBlob.invincible
         entBlob.invincible -= delta
         entBlob.invincible = null if entBlob.invincible < 0
@@ -90,13 +89,15 @@ BlobSystem =
           expectedWeight = square Math.max 0, smallPos.radius - diff
           expectedWeight = 0 if expectedWeight < 10
           weightGain = smallBlob.weight - expectedWeight
-          weightGain /= 5 if weightGain > 10
+          weightGain /= 2 if weightGain > 10
           # Velocity sharing doesn't work as well as expected.
           #bigBlob.velX = (bigBlob.velX + smallBlob.velX) * bigBlob.weight / (bigBlob.weight + weightGain)
           #bigBlob.velY = (bigBlob.velY + smallBlob.velY) * bigBlob.weight / (bigBlob.weight + weightGain)
           bigBlob.weight += weightGain
+          bigBlob.weightCap += weightGain if bigBlob.weightCap?
           bigPos.radius = Math.sqrt bigBlob.weight
           smallBlob.weight -= weightGain
+          smallBlob.weightCap -= weightGain if smallBlob.weightCap?
           smallBlob.weight = Math.max 0, smallBlob.weight
           smallPos.radius = Math.sqrt smallBlob.weight
       # Put entities into the quadtree

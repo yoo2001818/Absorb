@@ -68,7 +68,6 @@ RenderSystem =
       @ctx.font = (pos.radius* @camera.ratio/2)+"px sans-serif";
       @ctx.strokeStyle = '#000'
       @ctx.fillStyle = '#fff'
-      console.log playerComp.name
       @ctx.fillText playerComp.name, (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2
       @ctx.strokeText playerComp.name, (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2
     return
