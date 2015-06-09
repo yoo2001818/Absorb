@@ -3,25 +3,38 @@ assert = require 'assert'
 
 SpawnSystem =
   add: (engine) ->
+    @engine = engine
     # Sets the boundary of the game
     engine.e().c 'pos',
       x: 0
       y: 0,
-      radius: 1000
+      radius: 100
     .c 'boundary',{}
     .c 'render',
       fill: 'none'
       stroke: '#000'
     # Spawn 1000 blobs
     if engine.isServer
-      for i in [0..1000]
+      for i in [0..10]
         engine.aa 'spawn', null, null,
-          x: Math.random()*2000-1000
-          y: Math.random()*2000-1000
+          x: Math.random()*200-100
+          y: Math.random()*200-100
           radius: Math.random() * 10 + 8
           velX: Math.random()*60-30
           velY: Math.random()*60-30
           color: Math.random()*360
+  update: () ->
+    return unless @engine.isServer
+    return unless Math.random() > 0.9
+    ###
+    @engine.aa 'spawn', null, null,
+      x: Math.random()*200-100
+      y: Math.random()*200-100
+      radius: Math.random() * 10 + 8
+      velX: Math.random()*60-30
+      velY: Math.random()*60-30
+      color: Math.random()*360
+    ###
 
 SpawnAction = Action.scaffold (engine) ->
   # Pre check

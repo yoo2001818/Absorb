@@ -13,6 +13,12 @@ PlayerAddAction = Action.scaffold (engine) ->
   assert @options?
   assert @options.name?
   @result = engine.e().c('player', @options).id
+  
+PlayerRemoveAction = Action.scaffold (engine) ->
+  engine.removeEntity @player
+  for entity in engine.e 'control'
+    if entity.c('control').owner == @player.id
+      entity.remove 'control'
 
 PlayerMouseAction = Action.scaffold (engine) ->
   assert @player?
@@ -31,7 +37,15 @@ PlayerMouseAction = Action.scaffold (engine) ->
   playerComp.mouseY = dist * Math.sin angle
   @result = true
 
+PlayerAssignAction = Action.scaffold (engine) ->
+  assert @options?
+  @entity.c 'control',
+    owner: @options
+  @result = true
+
 module.exports =
   component: PlayerComponent
   mouseAction: PlayerMouseAction
   addAction: PlayerAddAction
+  removeAction: PlayerRemoveAction
+  assignAction: PlayerAssignAction

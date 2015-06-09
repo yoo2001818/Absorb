@@ -63,19 +63,21 @@ ControlRenderSystem =
     if radiusSum > 0
       render.camera.x = xSum / radiusSum
       render.camera.y = ySum / radiusSum
-      render.camera.ratio = Math.pow(render.canvas.width / 2 / 10 / Math.sqrt(weightSum), 0.6)
+      render.camera.ratio = Math.pow(render.canvas.width / 2 / 4 / Math.sqrt(weightSum), 0.6)
     else
       render.camera.x = 0
       render.camera.y = 0
       render.camera.ratio = 0.5
 
 ControlSplitAction = Action.scaffold (engine) ->
+  return unless engine.isServer
   assert @player?
   playerComp = @player.c 'player'
   angle = Math.atan2 playerComp.mouseY, playerComp.mouseX
   for entity in engine.s('control').entities
     if entity.c('blob').weight > 100 and entity.c('control').owner == @player.id
-      newEntity = engine.e engine.aa('blobSplit', entity, null, angle)
+      # TODO On client side, this will return null.
+      newEntity = engine.e engine.aa('blobSplit', entity, null, angle).result
       newEntity.c 'control', entity.c('control')
   @result = true
 

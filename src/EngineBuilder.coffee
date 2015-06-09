@@ -20,7 +20,9 @@ build = (isServer) ->
   engine.a 'blobSplit', require('./Blob').splitAction
   engine.a 'controlSplit', require('./Control').action
   engine.a 'playerAdd', require('./Player').addAction
+  engine.a 'playerRemove', require('./Player').removeAction
   engine.a 'playerMouse', require('./Player').mouseAction
+  engine.a 'playerAssign', require('./Player').assignAction
   engine.a 'spawn', require('./Sync').action
   
   engine.s 'spawn', require('./Sync').system
@@ -42,10 +44,9 @@ build = (isServer) ->
           hasOne = true if controlComp.owner == player.id
         if not hasOne
           entity = @entities[0]
+          return unless entity? # No blob to assign
           return if entity.c 'control'
-          console.log 'assign'
-          entity.c 'control',
-            owner: player.id
+          engine.aa 'playerAssign', entity, null, player.id
   ###
   # Create a player object
   selfPlayer = engine.e engine.aa 'playerAdd', null, null,

@@ -27,10 +27,13 @@ window.onload = () ->
   prevTime = new Date().getTime()
   animationLoop = () ->
     window.requestAnimationFrame animationLoop
+    # It has moved to setInterval now
+  animationLoop()
+  setInterval () ->
     newTime = new Date().getTime()
     engine.update newTime - prevTime
     prevTime = newTime
-  animationLoop()
+  , 16
   window.onresize = () ->
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
