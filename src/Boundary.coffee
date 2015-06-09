@@ -31,7 +31,7 @@ BoundarySystem =
       # Revert transform
       entBlob.velX = vx * cos - vy * sin
       entBlob.velY = vy * cos + vx * sin
-    boundary.radius = Math.sqrt(weightSum + 100) * 2 + 60
+    boundary.radius = Math.sqrt(weightSum + 100) * 4 + 60
 
 module.exports =
   component: BoundaryComponent

@@ -36,8 +36,10 @@ ControlSystem =
       continue unless player?
       entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
-      entBlob.velX += (player.mouseX - entBlob.velX) / 30
-      entBlob.velY += (player.mouseY - entBlob.velY) / 30
+      mouseX = player.mouseX * Math.min(1, Math.pow(15/entPos.radius, 0.5))
+      mouseY = player.mouseY * Math.min(1, Math.pow(15/entPos.radius, 0.5))
+      entBlob.velX += (mouseX - entBlob.velX) / 30
+      entBlob.velY += (mouseY - entBlob.velY) / 30
       entBlob.velX += (group.x - entPos.x - entBlob.velX) / 30
       entBlob.velY += (group.y - entPos.y - entBlob.velY) / 30
 
@@ -68,7 +70,7 @@ ControlRenderSystem =
     else
       render.camera.x = 0
       render.camera.y = 0
-      render.camera.ratio = 0.5
+      render.camera.ratio = 1
 
 ControlSplitAction = Action.scaffold (engine) ->
   return unless engine.isServer

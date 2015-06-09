@@ -9,7 +9,6 @@ module.exports = (io) ->
   console.log 'Hooking protocols to game engine'
   engine.s 'protocol',
     action: (turn, action) ->
-      console.log 'sending '+action.name
       io.emit 'action', action.serialize()
   prevTime = new Date().getTime()
   setInterval () ->

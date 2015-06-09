@@ -70,7 +70,7 @@ RenderSystem =
       player = engine.e entity.c('control').owner
       continue unless player
       playerComp = player.c 'player'
-      continue if pos.radius* @camera.ratio/2 < 15
+      continue if pos.radius* @camera.ratio/2 < 5
       @ctx.font = (pos.radius* @camera.ratio/2)+"px sans-serif";
       @ctx.strokeStyle = '#000'
       @ctx.fillStyle = '#fff'

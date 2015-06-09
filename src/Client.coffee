@@ -8,7 +8,6 @@ if io?
   socket.on 'engine', (data) ->
     engine.deserialize data
   socket.on 'action', (data) ->
-    console.log data
     engine.a Action.deserialize(engine, data)
   socket.on 'player', (id) ->
     engine.player = engine.e id
@@ -46,5 +45,13 @@ window.onload = () ->
     engine.aa 'playerMouse', null, engine.player,
       mouseX: e.clientX - rect.left - canvas.width / 2
       mouseY: e.clientY - rect.top - canvas.height / 2
+  , false
+  window.addEventListener 'touchmove', (e) ->
+    return if (new Date().getTime() - sendLast) < 100
+    sendLast = new Date().getTime()
+    rect = canvas.getBoundingClientRect()
+    engine.aa 'playerMouse', null, engine.player,
+      mouseX: e.touches[0].pageX - rect.left - canvas.width / 2
+      mouseY: e.touches[0].pageY - rect.top - canvas.height / 2
   , false
 window.engine = engine
