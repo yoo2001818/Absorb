@@ -129,7 +129,6 @@ BlobSplitAction = Action.scaffold (engine) ->
     velX: velX + entBlob.velX
     velY: velY + entBlob.velY
     group: @entity.c('blob').group
-    parent: parent.id
     weightCap: weight
     weight: 1
   .c 'render', @entity.c 'render'

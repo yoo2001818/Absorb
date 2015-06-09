@@ -52,6 +52,7 @@ ControlRenderSystem =
     radiusSum = 0
     weightSum = 0
     for entity in @entities
+      break unless @engine.player?
       continue unless entity.c('control').owner == @engine.player.id
       entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
@@ -74,8 +75,9 @@ ControlSplitAction = Action.scaffold (engine) ->
   angle = Math.atan2 playerComp.mouseY, playerComp.mouseX
   for entity in engine.s('control').entities
     if entity.c('blob').weight > 100 and entity.c('control').owner == @player.id
-      newEntity = engine.e engine.aa 'blobSplit', entity, null, angle
-      newEntity.c 'control', entity.c 'control'
+      newEntity = engine.e engine.aa('blobSplit', entity, null, angle)
+      newEntity.c 'control', entity.c('control')
+  @result = true
 
 module.exports = 
   component: ControlComponent

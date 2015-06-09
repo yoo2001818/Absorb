@@ -29,6 +29,7 @@ PlayerMouseAction = Action.scaffold (engine) ->
   dist = 2 * Math.min 80, Math.sqrt(y*y + x*x)
   playerComp.mouseX = dist * Math.cos angle
   playerComp.mouseY = dist * Math.sin angle
+  @result = true
 
 module.exports =
   component: PlayerComponent

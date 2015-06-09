@@ -1,5 +1,6 @@
 ActionEngine = require('ecstasy').ActionEngine
 Action = require('ecstasy').Action
+ComponentGroup = require('ecstasy').ComponentGroup
 
 build = (isServer) ->
   engine = new ActionEngine isServer
@@ -24,22 +25,33 @@ build = (isServer) ->
   
   engine.s 'spawn', require('./Sync').system
   
-  ## Test code for cameras
+  # Test code for cameras
   engine.s 'camera',
     add: (engine) ->
       @engine = engine
-      @entities = engine.e 'blob'
+      @entities = engine.e(ComponentGroup.createBuilder(engine).contain('blob')
+        .exclude('control').build())
+      @players = engine.e 'player'
       @controls = engine.e 'control'
     update: (delta) ->
-      if @controls.length == 0
-        entity = @entities[0]
-        return if entity.c 'control'
-        entity.c 'control',
-          owner: @engine.player.id
-  ## Create a player object
+      return unless @engine.isServer
+      for player in @players
+        hasOne = false
+        for control in @controls
+          controlComp = control.c 'control'
+          hasOne = true if controlComp.owner == player.id
+        if not hasOne
+          entity = @entities[0]
+          return if entity.c 'control'
+          console.log 'assign'
+          entity.c 'control',
+            owner: player.id
+  ###
+  # Create a player object
   selfPlayer = engine.e engine.aa 'playerAdd', null, null,
     name: 'Player'
   engine.player = selfPlayer
+  ###
   
   return engine
 

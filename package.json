@@ -24,7 +24,7 @@
     "grunt-contrib-uglify": "^0.9.1"
   },
   "dependencies": {
-    "ecstasy": "0.0.4",
+    "ecstasy": "0.0.5",
     "express": "^4.12.4",
     "morgan": "^1.5.3",
     "serve-static": "^1.9.3",
