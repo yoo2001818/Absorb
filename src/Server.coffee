@@ -36,12 +36,12 @@ module.exports = (io) ->
         data.player = playerId
         engine.a Action.deserialize(engine, data)
       catch e
-        console.log e.message
+        throw e
     socket.on 'disconnect', () ->
       console.log 'disconnected'
       try
         engine.aa 'playerRemove', null, engine.e(playerId)
       catch e
-        console.log e.message
+        throw e
     
   console.log 'Started accepting sockets'

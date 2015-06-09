@@ -29,6 +29,7 @@ ControlSystem =
       group.y /= group.radius
     for entity in @entities
       continue unless entity.c('control').owner?
+      continue unless @engine.e(entity.c('control').owner)?
       group = groupList[entity.c('control').owner]
       player = @engine.e(entity.c('control').owner).c 'player'
       continue unless group?
@@ -76,9 +77,7 @@ ControlSplitAction = Action.scaffold (engine) ->
   angle = Math.atan2 playerComp.mouseY, playerComp.mouseX
   for entity in engine.s('control').entities
     if entity.c('blob').weight > 100 and entity.c('control').owner == @player.id
-      # TODO On client side, this will return null.
-      newEntity = engine.e engine.aa('blobSplit', entity, null, angle).result
-      newEntity.c 'control', entity.c('control')
+      engine.aa 'blobSplit', entity, null, angle
   @result = true
 
 module.exports = 

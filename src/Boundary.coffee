@@ -9,9 +9,11 @@ BoundarySystem =
   update: (delta) ->
     return if not @boundaries.length > 0
     boundary = @boundaries[0].c 'pos' # TODO Only 1st object is used; should be changed
+    weightSum = 0
     for entity in @entities
       entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
+      weightSum += entBlob.weight
       dist = entPos.distance boundary
       maxDist = boundary.radius - entPos.radius
       diff = dist - maxDist
@@ -29,7 +31,7 @@ BoundarySystem =
       # Revert transform
       entBlob.velX = vx * cos - vy * sin
       entBlob.velY = vy * cos + vx * sin
-    return
+    boundary.radius = Math.sqrt(weightSum + 100) * 2 + 60
 
 module.exports =
   component: BoundaryComponent

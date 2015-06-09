@@ -40,7 +40,6 @@ window.onload = () ->
   window.onclick = () ->
     engine.aa 'controlSplit', null, engine.player
   window.addEventListener 'mousemove', (e) ->
-    console.log new Date().getTime() - sendLast
     return if (new Date().getTime() - sendLast) < 100
     sendLast = new Date().getTime()
     rect = canvas.getBoundingClientRect()

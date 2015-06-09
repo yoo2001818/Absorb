@@ -36,12 +36,17 @@ BlobSystem =
       groups[key] -= delta
       if groups[key] < 0
         groups[key] = null
+    weightSum = 0
+    for entity in @entities
+      entBlob = entity.c 'blob'
+      weightSum += entBlob.weight
     # Create QuadTree, TODO should not use hard-coding
-    quad = new QuadTree -1000, -1000, 1000*2, 1000*2,
+    quad = new QuadTree -10000, -10000, 10000*2, 10000*2,
       maxchildren: 4
     for entity, i in @entities
       [entPos, entBlob] = [entity.c('pos'), entity.c('blob')]
       continue if entBlob.weight <= 0.1
+      entBlob.weight *= 0.99 if entBlob.weight > weightSum/3*2
       entPos.x += entBlob.velX / 1000 * delta
       entPos.y += entBlob.velY / 1000 * delta
       # Set velocity to min/max value
@@ -132,6 +137,7 @@ BlobSplitAction = Action.scaffold (engine) ->
     weightCap: weight
     weight: 1
   .c 'render', @entity.c 'render'
+  newEntity.c 'control', @entity.c 'control' if @entity.c 'control'
   entBlob.weightCap = weight
   entBlob.velX = -velX/6
   entBlob.velY = -velY/6
