@@ -19,7 +19,7 @@ PlayerRemoveAction = Action.scaffold (engine) ->
   for entity in engine.e 'control'
     continue unless entity
     if entity.c('control').owner == @player.id
-      entity.remove 'control'
+      engine.removeEntity entity
   @result = true
 
 PlayerMouseAction = Action.scaffold (engine) ->
