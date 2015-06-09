@@ -29,9 +29,10 @@ SpawnSystem =
     return unless @engine.isServer
     return if @ticks > 0
     @ticks = 500
+    boundary = @engine.e('boundary')[0].c('pos').radius
     @engine.aa 'spawn', null, null,
-      x: Math.random()*200-100
-      y: Math.random()*200-100
+      x: Math.random()*boundary*2-boundary
+      y: Math.random()*boundary*2-boundary
       radius: 4
       velX: Math.random()*60-30
       velY: Math.random()*60-30
