@@ -1,5 +1,5 @@
 Action = require('ecstasy').Action
-assert = require 'assert'
+assert = require './Assert'
 
 SpawnSystem =
   add: (engine) ->

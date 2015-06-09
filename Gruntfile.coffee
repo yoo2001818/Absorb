@@ -32,7 +32,7 @@ module.exports = (grunt) ->
         dest: 'build/<%= pkg.name %>.min.js'
     browserify:
       files:
-        src: 'build/src/Init.js'
+        src: 'build/src/Client.js'
         dest: 'build/<%= pkg.name %>.js'
 
   grunt.loadNpmTasks 'grunt-contrib-copy'
