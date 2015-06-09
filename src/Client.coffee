@@ -2,8 +2,12 @@ EngineBuilder = require './EngineBuilder'
 Action = require('ecstasy').Action
 # Client
 if io?
+  spectate = confirm '관전할래요?'
+  nickname = prompt '닉네임 뭐로 할래요?' unless spectate
   socket = io null
   engine = EngineBuilder.build false
+  socket.on 'connect', () ->
+    socket.emit 'init', nickname unless spectate
   # Wait for Engine data
   socket.on 'engine', (data) ->
     engine.deserialize data

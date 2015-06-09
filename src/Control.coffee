@@ -36,8 +36,8 @@ ControlSystem =
       continue unless player?
       entPos = entity.c 'pos'
       entBlob = entity.c 'blob'
-      mouseX = player.mouseX * Math.min(1, Math.pow(15/entPos.radius, 0.5))
-      mouseY = player.mouseY * Math.min(1, Math.pow(15/entPos.radius, 0.5))
+      mouseX = player.mouseX * Math.min(1, Math.pow(10/entPos.radius, 0.9))
+      mouseY = player.mouseY * Math.min(1, Math.pow(10/entPos.radius, 0.9))
       entBlob.velX += (mouseX - entBlob.velX) / 30
       entBlob.velY += (mouseY - entBlob.velY) / 30
       entBlob.velX += (group.x - entPos.x - entBlob.velX) / 30

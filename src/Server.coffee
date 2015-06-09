@@ -22,25 +22,30 @@ module.exports = (io) ->
   , 4000
   io.on 'connection', (socket) ->
     console.log 'A client has connected'
-    console.log 'Sending engine data'
-    socket.emit 'engine', engine.serialize()
-    console.log 'Generating Player for client'
-    playerName = 'Player '+(clientId++)
-    action = engine.aa 'playerAdd', null, null,
-      name: playerName
-    playerId = action.result
-    socket.emit 'player', playerId
-    socket.on 'action', (data) ->
-      try
-        data.player = playerId
-        engine.a Action.deserialize(engine, data)
-      catch e
-        throw e
-    socket.on 'disconnect', () ->
-      console.log 'disconnected'
-      try
-        engine.aa 'playerRemove', null, engine.e(playerId)
-      catch e
-        throw e
+    console.log 'Asking for nickname'
+    inited = false
+    socket.on 'init', (nickname) ->
+      return if inited
+      inited = true
+      console.log 'Sending engine data'
+      socket.emit 'engine', engine.serialize()
+      console.log 'Generating Player for client'
+      playerName = nickname || 'Player '+(clientId++)
+      action = engine.aa 'playerAdd', null, null,
+        name: playerName
+      playerId = action.result
+      socket.emit 'player', playerId
+      socket.on 'action', (data) ->
+        try
+          data.player = playerId
+          engine.a Action.deserialize(engine, data)
+        catch e
+          throw e
+      socket.on 'disconnect', () ->
+        console.log 'disconnected'
+        try
+          engine.aa 'playerRemove', null, engine.e(playerId)
+        catch e
+          throw e
     
   console.log 'Started accepting sockets'
