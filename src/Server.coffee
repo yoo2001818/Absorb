@@ -1,7 +1,18 @@
-EngineBuilder = require './EngineBuilder' 
+express = require 'express'
+serveStatic = require 'serve-static'
+morgan = require 'morgan'
 
-console.log 'server'
-engine = EngineBuilder.build true
-setInterval () ->
-  engine.update(12)
-, 12
+port = 8000
+
+app = express()
+server = require('http').Server app
+io = require('socket.io') server
+
+app.use morgan 'short'
+app.use new serveStatic './build'
+
+server.listen port
+console.log "Listening on port #{port}"
+console.log 'You may need to run grunt before starting the server.'
+
+require('./ServerGame') io

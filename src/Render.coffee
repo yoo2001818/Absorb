@@ -12,6 +12,7 @@ RenderSystem =
   add: (engine) ->
     @engine = engine
     @entities = engine.e 'pos', 'render'
+    @players = engine.e 'pos', 'render', 'control'
     @canvas = null
     @ctx = null
     @camera = new Camera()
@@ -59,7 +60,12 @@ RenderSystem =
       @ctx.arc (-@camera.x + pos.x) * @camera.ratio + @canvas.width / 2, (-@camera.y + pos.y) * @camera.ratio + @canvas.height / 2,
         Math.abs(pos.radius * @camera.ratio - 3), 0, Math.PI * 2, false
       @ctx.fill()
-      continue unless entity.c('control')
+    for entity in @players
+      pos = entity.c 'pos'
+      continue if camX1 > pos.x + pos.radius
+      continue if camY1 > pos.y + pos.radius
+      continue if camX2 < pos.x - pos.radius
+      continue if camY2 < pos.y - pos.radius
       continue unless entity.c('control').owner
       player = engine.e entity.c('control').owner
       continue unless player
