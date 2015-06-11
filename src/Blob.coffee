@@ -1,30 +1,14 @@
 Action = require('ecstasy').Action
 QuadTree = require('simple-quadtree')
-
-_groupId = 0
-groups = {}
+Control = require('./Control')
 
 class BlobComponent
-  constructor: ({@velX, @velY, @group, @parent, @weight, @weightCap, @invincible}) ->
+  constructor: ({@velX, @velY, @group, @weight, @weightCap, @invincible}) ->
     @velX ?= 0
     @velY ?= 0
     @weight ?= 0.15
-    @group ?= _groupId++
 
 square = (x) -> x * x
-
-pushOther = (entity, other) ->
-  [entPos, entBlob] = [entity.c('pos'), entity.c('blob')]
-  [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
-  # Run away from the other
-  direction = Math.atan2 entPos.y - otherPos.y, entPos.x - otherPos.x
-  vel = 30
-  velX = vel * Math.cos direction
-  velY = vel * Math.sin direction
-  entBlob.velX += (velX-entBlob.velX)/10
-  entBlob.velY += (velY-entBlob.velY)/10
-  otherBlob.velX += (-velX-otherBlob.velX)/10
-  otherBlob.velY += (-velY-otherBlob.velY)/10
 
 BlobSystem =
   priority: 1500
@@ -32,21 +16,17 @@ BlobSystem =
     @engine = engine
     @entities = engine.e 'blob', 'pos'
   update: (delta) ->
-    for key of groups
-      groups[key] -= delta
-      if groups[key] < 0
-        groups[key] = null
     weightSum = 0
     for entity in @entities
       entBlob = entity.c 'blob'
       weightSum += entBlob.weight
     # Create QuadTree, TODO should not use hard-coding
     quad = new QuadTree -10000, -10000, 10000*2, 10000*2,
-      maxchildren: 4
+      maxchildren: 10
     for entity, i in @entities
       [entPos, entBlob] = [entity.c('pos'), entity.c('blob')]
       continue if entBlob.weight <= 0.1
-      entBlob.weight *= 0.99 if entBlob.weight > weightSum/3*2
+      entBlob.weight *= 0.99 if entBlob.weight > weightSum/3
       entPos.x += entBlob.velX / 1000 * delta
       entPos.y += entBlob.velY / 1000 * delta
       # Set velocity to min/max value
@@ -74,11 +54,8 @@ BlobSystem =
         other = obj.entity
         return if other == entity
         [otherPos, otherBlob] = [other.c('pos'), other.c('blob')]
-        return if otherBlob.weightCap
         if entBlob.group == otherBlob.group
-          if groups[entBlob.group]
-            pushOther entity, other if entPos.collides otherPos
-            return
+          return if @engine.e(entBlob.group).c('group').time > 0
         return if otherBlob.weight <= 0.1
         return if entBlob.invincible
         return if otherBlob.invincible
@@ -141,7 +118,7 @@ BlobSplitAction = Action.scaffold (engine) ->
   entBlob.weightCap = weight
   entBlob.velX = -velX/6
   entBlob.velY = -velY/6
-  groups[@entity.c('blob').group] = 8000
+  engine.e(@entity.c('blob').group).c('group').time = 30000
   @result = newEntity.id
 
 module.exports = 

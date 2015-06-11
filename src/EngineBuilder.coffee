@@ -10,12 +10,14 @@ build = (isServer) ->
   engine.c 'boundary', require('./Boundary').component
   engine.c 'render', require('./Render').component
   engine.c 'control', require('./Control').component
+  engine.c 'group', require('./Group').component
   
   engine.s 'blob', require('./Blob').system
   engine.s 'boundary', require('./Boundary').system
   engine.s 'render', require('./Render').system
   engine.s 'control', require('./Control').system
   engine.s 'controlRender', require('./Control').renderSystem
+  engine.s 'group', require('./Group').system
   
   engine.a 'blobSplit', require('./Blob').splitAction
   engine.a 'controlSplit', require('./Control').action

@@ -47,6 +47,8 @@ SpawnAction = Action.scaffold (engine) ->
   assert typeof @options.velX == 'number'
   assert typeof @options.velY == 'number'
   assert typeof @options.color == 'number'
+  # Create group
+  group = engine.e().c 'group', {}
   # Create entity
   @result = engine.e().c 'pos',
     x: @options.x
@@ -56,6 +58,7 @@ SpawnAction = Action.scaffold (engine) ->
     velX: @options.velX
     velY: @options.velY
     weight: @options.radius * @options.radius
+    group: group.id
   .c 'render',
     fill: "hsl(#{@options.color}, 100%, 75%)"
     stroke: "hsl(#{@options.color}, 100%, 60%)"
